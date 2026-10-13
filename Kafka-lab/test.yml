@@ -1,0 +1,43 @@
+services:
+  kafka:
+    image: confluentinc/cp-kafka:8.0.0       # CP 8.x = Apache Kafka 4.x, KRaft only
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"                          # expose EXTERNAL listener to your laptop
+    environment:
+      # ---- Identity ----
+      KAFKA_NODE_ID: 1                       # unique per node in the cluster (node.id)
+      CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"   # same on every node; used to format storage
+
+      # ---- Roles & quorum ----
+      KAFKA_PROCESS_ROLES: "broker,controller"           # combined mode
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:29093"    # id@host:port of every controller voter
+
+      # ---- Listeners ----
+      KAFKA_LISTENERS: "INTERNAL://0.0.0.0:29092,CONTROLLER://0.0.0.0:29093,EXTERNAL://0.0.0.0:9092"
+      KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:29092,EXTERNAL://localhost:9092"
+      #   ^ CONTROLLER is NOT advertised to clients
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT"
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "INTERNAL"
+
+      # ---- Internal topics (must be ≤ number of brokers!) ----
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1          # __consumer_offsets RF
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1  # __transaction_state RF
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+
+      # ---- Defaults for new topics ----
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"   # make topic creation explicit while learning
+
+      # ---- Lab convenience ----
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_LOG_DIRS: "/var/lib/kafka/data"
+      KAFKA_HEAP_OPTS: "-Xms512m -Xmx512m"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+
+volumes:
+  kafka-data:

@@ -1,3 +1,10 @@
 kubectl config set-context --current --namespace=pg-lab
 kubectl config view --minify --output 'jsonpath={..namespace}'
 kubectl config get-contexts
+
+
+
+This is the real latency cost of acks=all: a write is only as fast as the slowest in-sync replica.
+There’s no rule that you need as many brokers as partitions. One broker can hold hundreds of partitions.
+
+Kafka brokers are not interchangeable. Each one has its own identity, its own data, and an address other brokers and clients remember. A StatefulSet gives you exactly those three things.

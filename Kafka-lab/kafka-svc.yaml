@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+  namespace: kafka-lab
+spec:
+  clusterIP: None  # headless: gives each pod its own DNS name
+  publishNotReadyAddresses: true # DNS exists before pods are Ready (controllers must find each other to BECOME ready)
+  selector:
+    app: kafka
+  ports:
+    - name: kafka
+      port: 9092
+    - name: controller
+      port: 9093

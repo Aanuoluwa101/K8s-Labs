@@ -7,11 +7,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: postgres # the query: "I manage pods with this label"
   template:
     metadata:
       labels:
-        app: postgres
+        app: postgres # the tag: stamped onto every pod this template creates
     spec:
       containers:
         - name: postgres
@@ -26,8 +26,8 @@ spec:
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
           volumeMounts:
-            - name: data
-              mountPath: /var/lib/postgresql/data
+            - name: data  # "mount the volume called data..."
+              mountPath: /var/lib/postgresql/data  # "...at this path inside the container"
           readinessProbe:
             exec:
               command: ["sh", "-c", "pg_isready -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""]
@@ -35,7 +35,7 @@ spec:
             periodSeconds: 5
   volumeClaimTemplates:
     - metadata:
-        name: data 
+        name: data # "here is the volume called data"
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
