@@ -1,0 +1,83 @@
+[appuser@kafka-0 ~]$ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group scoring
+
+GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                                    HOST            CLIENT-ID
+scoring         orders          0          -               0               -               consumer-76f897bbd6-b4hkn-6b64ce67-5f97-4063-8459-3eff6665aef6 /10.244.0.51    consumer-76f897bbd6-b4hkn
+scoring         orders          1          37              37              0               consumer-76f897bbd6-b4hkn-6b64ce67-5f97-4063-8459-3eff6665aef6 /10.244.0.51    consumer-76f897bbd6-b4hkn
+scoring         orders          2          56              56              0               consumer-76f897bbd6-gj6kj-3dd1ee55-3741-4910-a9e3-cbc55f77af8f /10.244.0.52    consumer-76f897bbd6-gj6kj
+[appuser@kafka-0 ~]$ kafka-topics --bootstrap-server localhost:9092 --describe --topic orders
+Topic: orders   TopicId: C1MrskvxRFSJia3NXWTigA PartitionCount: 3       ReplicationFactor: 3    Configs: min.insync.replicas=2
+        Topic: orders   Partition: 0    Leader: 1       Replicas: 1,2,0 Isr: 1,2,0      Elr:    LastKnownElr:
+        Topic: orders   Partition: 1    Leader: 2       Replicas: 2,0,1 Isr: 2,0,1      Elr:    LastKnownElr:
+        Topic: orders   Partition: 2    Leader: 0       Replicas: 0,1,2 Isr: 0,1,2      Elr:    LastKnownElr:
+[appuser@kafka-0 ~]$ kafka-topics --bootstrap-server localhost:9092 --describe --under-replicated-partitions
+[appuser@kafka-0 ~]$ kafka-topics --bootstrap-server localhost:9092 --describe --unavailable-partitions
+[appuser@kafka-0 ~]$ kafka-metadata-quorum --bootstrap-server localhost:9092 describe --status
+ClusterId:              MkU3OEVBNTcwNTJENDM2Qk
+LeaderId:               2
+LeaderEpoch:            1
+HighWatermark:          19858
+MaxFollowerLag:         0
+MaxFollowerLagTimeMs:   346
+CurrentVoters:          [{"id": 0, "directoryId": null, "endpoints": ["CONTROLLER://kafka-0.kafka.kafka-lab.svc.cluster.local:9093"]}, {"id": 1, "directoryId": null, "endpoints": ["CONTROLLER://kafka-1.kafka.kafka-lab.svc.cluster.local:9093"]}, {"id": 2, "directoryId": null, "endpoints": ["CONTROLLER://kafka-2.kafka.kafka-lab.svc.cluster.local:9093"]}]
+CurrentObservers:       []
+[appuser@kafka-0 ~]$ ^C
+[appuser@kafka-0 ~]$ kafka-topics --bootstrap-server localhost:9092 --describe --topic __consumer_offsets
+Topic: __consumer_offsets       TopicId: 0Vmt8f6SR6qzcgIjjHJ3iA PartitionCount: 50      ReplicationFactor: 3    Configs: compression.type=producer,min.insync.replicas=2,cleanup.policy=compact,segment.bytes=104857600
+        Topic: __consumer_offsets       Partition: 0    Leader: 2       Replicas: 2,0,1 Isr: 2,0,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 1    Leader: 0       Replicas: 0,1,2 Isr: 0,1,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 2    Leader: 1       Replicas: 1,2,0 Isr: 1,2,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 3    Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 4    Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 5    Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 6    Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 7    Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 8    Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 9    Leader: 0       Replicas: 0,1,2 Isr: 0,1,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 10   Leader: 1       Replicas: 1,2,0 Isr: 1,2,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 11   Leader: 2       Replicas: 2,0,1 Isr: 2,0,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 12   Leader: 2       Replicas: 2,0,1 Isr: 2,0,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 13   Leader: 0       Replicas: 0,1,2 Isr: 0,1,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 14   Leader: 1       Replicas: 1,2,0 Isr: 1,2,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 15   Leader: 2       Replicas: 2,0,1 Isr: 2,0,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 16   Leader: 0       Replicas: 0,1,2 Isr: 0,1,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 17   Leader: 1       Replicas: 1,2,0 Isr: 1,2,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 18   Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 19   Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 20   Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 21   Leader: 2       Replicas: 2,0,1 Isr: 2,0,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 22   Leader: 0       Replicas: 0,1,2 Isr: 0,1,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 23   Leader: 1       Replicas: 1,2,0 Isr: 1,2,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 24   Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 25   Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 26   Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 27   Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 28   Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 29   Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 30   Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 31   Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 32   Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 33   Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 34   Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 35   Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 36   Leader: 1       Replicas: 1,2,0 Isr: 1,2,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 37   Leader: 2       Replicas: 2,0,1 Isr: 2,0,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 38   Leader: 0       Replicas: 0,1,2 Isr: 0,1,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 39   Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 40   Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 41   Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 42   Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 43   Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 44   Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 45   Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 46   Leader: 0       Replicas: 0,2,1 Isr: 0,2,1      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 47   Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 48   Leader: 2       Replicas: 2,1,0 Isr: 2,1,0      Elr:    LastKnownElr:
+        Topic: __consumer_offsets       Partition: 49   Leader: 1       Replicas: 1,0,2 Isr: 1,0,2      Elr:    LastKnownElr:
+
+
+
+A running or ready pod isn't in sync yet. It first copies the records written while it was away. Only once it reaches the leader's log end offset does the leader add it back to the ISR. That gap is exactly why Strimzi waits before restarting the next broker.
+
+With no ack, the producer retries to the new leader, which doesn't have it, so it's written once. When the old broker rejoins, it uses the leader epoch history to truncate the records the new leader never had. The result is exactly one copy, with no loss and no duplicate.
+
+A visual example

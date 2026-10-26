@@ -8,3 +8,22 @@ This is the real latency cost of acks=all: a write is only as fast as the slowes
 There’s no rule that you need as many brokers as partitions. One broker can hold hundreds of partitions.
 
 Kafka brokers are not interchangeable. Each one has its own identity, its own data, and an address other brokers and clients remember. A StatefulSet gives you exactly those three things.
+
+
+Every time a pod started, it downloaded confluent-kafka from PyPI, and on a slow connection the download timed out. pip failed, the container exited, and Kubernetes restarted it.
+
+FIX
+minikube image build -t kafka-clients:1 .
+update the the clients.yaml to use the image and not pull from the internet
+kubectl apply -f clients.yaml
+
+
+
+kubectl -n kafka-lab exec kafka-0 -- kafka-topics --bootstrap-server localhost:9092 --describe --topic orders
+
+kubectl -n kafka-lab exec kafka-0 -- kafka-topics --bootstrap-server localhost:9092 --describe --under-replicated-partitions
+kubectl -n kafka-lab exec kafka-0 -- kafka-topics --bootstrap-server localhost:9092 --describe --unavailable-partitions
+
+ kafka-metadata-quorum --bootstrap-server localhost:9092 describe --status
+
+kafka-topics --bootstrap-server localhost:9092 --describe --topic __consumer_offsets

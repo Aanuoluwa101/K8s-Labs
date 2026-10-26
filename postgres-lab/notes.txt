@@ -1,0 +1,25 @@
+https://claude.ai/chat/1b8541d0-e178-475a-b5e3-090b235c4677
+
+Operators affords you DBA knowledge. They automatically handle 
+- Replication setup - choosing primary, streaming to replicas, what to do when one replica falls behind 
+- Routing - how to send write traffic to only the primary and read to the replicas 
+- failover 
+- Upgrade 
+- Backup 
+- manage credentials
+
+An operator gives you a StatefulSet’s stable identity plus knowledge of how Postgres actually works.
+
+
+Setting a pg_stat_statements.* parameter makes the operator load the extension for you.
+
+what does this mean
+
+
+What is WAL 
+
+
+walStorage puts WAL on a separate volume. A runaway WAL (failed archiving, a stuck replication slot) then fills its own disk instead of the data disk, and the two volumes do not compete for I/O.
+where you still referring to walStorage when you said "runaway WAL"
+
+what is a topology domain
