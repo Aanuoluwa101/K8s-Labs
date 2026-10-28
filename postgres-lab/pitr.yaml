@@ -1,0 +1,22 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: lab-pitr
+  namespace: db
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie
+  storage:
+    size: 1Gi
+  bootstrap:
+    recovery:
+      source: origin
+      recoveryTarget:
+        targetTime: "2026-10-28 03:24:03.445228+00" 
+  externalClusters:
+    - name: origin
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: lab-store
+          serverName: lab

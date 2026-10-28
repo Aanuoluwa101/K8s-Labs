@@ -23,3 +23,35 @@ walStorage puts WAL on a separate volume. A runaway WAL (failed archiving, a stu
 where you still referring to walStorage when you said "runaway WAL"
 
 what is a topology domain
+
+$ kubectl get nodes -L topology.kubernetes.io/zone
+NAME           STATUS   ROLES           AGE   VERSION   ZONE
+cnpg-lab       Ready    control-plane   12m   v1.37.0   zone-a
+cnpg-lab-m02   Ready    <none>          11m   v1.37.0   zone-b
+cnpg-lab-m03   Ready    <none>          10m   v1.37.0   zone-c
+
+How did that guy get the control plane role
+
+why did we have to give each node a zone label
+WaitForFirstConsumer - why needed 
+
+
+
+$ kubectl get storageclass
+NAME                   PROVISIONER                RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+local-path (default)   rancher.io/local-path      Delete          WaitForFirstConsumer   false                  10s
+standard               k8s.io/minikube-hostpath   Delete          Immediate              false                  15m
+
+what are storage classes and what's the difference between those 2
+
+Why this command after the apply
+
+
+would still like to see the logs of a join job
+
+• How many FAIL lines the writer prints before ok returns. That is your failover time. -> 16
+Compare the number of FAIL lines with drill A. A clean switchover should cost fewer. -> 14
+
+
+TODO
+Optional: change dataDurability to preferred, repeat, and see writes continue (at the cost of the guarantee). Change it back afterwards.

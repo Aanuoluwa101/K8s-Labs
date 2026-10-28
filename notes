@@ -27,3 +27,5 @@ kubectl -n kafka-lab exec kafka-0 -- kafka-topics --bootstrap-server localhost:9
  kafka-metadata-quorum --bootstrap-server localhost:9092 describe --status
 
 kafka-topics --bootstrap-server localhost:9092 --describe --topic __consumer_offsets
+
+

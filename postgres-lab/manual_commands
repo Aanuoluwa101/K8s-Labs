@@ -1,0 +1,6 @@
+kubectl create namespace db
+kubectl -n db create secret generic backup-creds --from-literal=ACCESS_KEY_ID= --from-literal=ACCESS_SECRET_KEY= --from-literal=REGION=uk-london-1
+
+
+kubectl cnpg -n db psql lab -- -d app -c \
+  "SET ROLE app; CREATE TABLE ticks (id bigserial PRIMARY KEY, at timestamptz DEFAULT now());"

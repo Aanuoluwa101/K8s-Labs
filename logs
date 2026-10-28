@@ -1,0 +1,127 @@
+$ kubectl -n db describe job lab-1-initdb
+Name:             lab-1-initdb
+Namespace:        db
+Selector:         batch.kubernetes.io/controller-uid=5b8ce0d9-0ebb-405d-a351-5a254fbdeee8
+Labels:           app.kubernetes.io/component=database
+                  app.kubernetes.io/instance=lab
+                  app.kubernetes.io/managed-by=cloudnative-pg
+                  app.kubernetes.io/name=postgresql
+                  app.kubernetes.io/version=18
+                  cnpg.io/cluster=lab
+                  cnpg.io/instanceName=lab-1
+                  cnpg.io/jobRole=initdb
+Annotations:      cnpg.io/operatorVersion: 1.30.1
+Controlled By:    Cluster/lab
+Parallelism:      1
+Completions:      1
+Completion Mode:  NonIndexed
+Suspend:          false
+Backoff Limit:    6
+Start Time:       Wed, 28 Oct 2026 02:35:44 +0100
+Completed At:     Wed, 28 Oct 2026 02:38:00 +0100
+Duration:         2m16s
+Pods Statuses:    0 Active (0 Ready) / 1 Succeeded / 0 Failed
+Pod Template:
+  Labels:           app.kubernetes.io/component=database
+                    app.kubernetes.io/instance=lab
+                    app.kubernetes.io/managed-by=cloudnative-pg
+                    app.kubernetes.io/name=postgresql
+                    app.kubernetes.io/version=18
+                    batch.kubernetes.io/controller-uid=5b8ce0d9-0ebb-405d-a351-5a254fbdeee8
+                    batch.kubernetes.io/job-name=lab-1-initdb
+                    cnpg.io/cluster=lab
+                    cnpg.io/instanceName=lab-1
+                    cnpg.io/jobRole=initdb
+                    controller-uid=5b8ce0d9-0ebb-405d-a351-5a254fbdeee8
+                    job-name=lab-1-initdb
+  Annotations:      cnpg.io/operatorVersion: 1.30.1
+  Service Account:  lab
+  Init Containers:
+   bootstrap-controller:
+    Image:           ghcr.io/cloudnative-pg/cloudnative-pg:1.30.1
+    Port:            <none>
+    Host Port:       <none>
+    SeccompProfile:  RuntimeDefault
+    Command:
+      /manager
+      bootstrap
+      /controller/manager
+      --log-level=info
+    Limits:
+      cpu:     500m
+      memory:  512Mi
+    Requests:
+      cpu:        500m
+      memory:     512Mi
+    Environment:  <none>
+    Mounts:
+      /controller from scratch-data (rw)
+      /dev/shm from shm (rw)
+      /run from scratch-data (rw)
+      /var/lib/postgresql/data from pgdata (rw)
+      /var/lib/postgresql/wal from pg-wal (rw)
+  Containers:
+   initdb:
+    Image:           ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie
+    Port:            <none>
+    Host Port:       <none>
+    SeccompProfile:  RuntimeDefault
+    Command:
+      /controller/manager
+      instance
+      init
+      --initdb-flags
+      --encoding=UTF8 --lc-collate=C --lc-ctype=C
+      --app-db-name
+      app
+      --app-user
+      app
+      --pg-wal
+      /var/lib/postgresql/wal/pg_wal
+      --log-level=info
+    Limits:
+      cpu:     500m
+      memory:  512Mi
+    Requests:
+      cpu:     500m
+      memory:  512Mi
+    Environment:
+      PGDATA:        /var/lib/postgresql/data/pgdata
+      POD_NAME:      lab-1-initdb
+      NAMESPACE:     db
+      CLUSTER_NAME:  lab
+      PSQL_HISTORY:  /controller/tmp/.psql_history
+      PGPORT:        5432
+      PGHOST:        /controller/run
+      TMPDIR:        /controller/tmp
+      APP_USERNAME:  <set to the key 'username' in secret 'lab-app'>  Optional: false
+    Mounts:
+      /controller from scratch-data (rw)
+      /dev/shm from shm (rw)
+      /run from scratch-data (rw)
+      /var/lib/postgresql/data from pgdata (rw)
+      /var/lib/postgresql/wal from pg-wal (rw)
+  Volumes:
+   pgdata:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  lab-1
+    ReadOnly:   false
+   scratch-data:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:
+    SizeLimit:  <unset>
+   shm:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     Memory
+    SizeLimit:  <unset>
+   pg-wal:
+    Type:          PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:     lab-1-wal
+    ReadOnly:      false
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Events:
+  Type    Reason            Age   From            Message
+  ----    ------            ----  ----            -------
+  Normal  SuccessfulCreate  11m   job-controller  Created pod: lab-1-initdb-n8n6g
+  Normal  Completed         9m9s  job-controller  Job completed
